@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <title>Bootstrap Number Input</title>
+</head>
+<body>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4">
+      <label for="numberInput">Número:</label>
+      <input type="number" id="numberInput" class="form-control">
+      <button class="btn btn-primary mt-2" onclick="agregarNumero()">Agregar a la lista</button>
+    </div>
+    <div class="col-md-8">
+      <table class="table mt-4">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Número</th>
+          </tr>
+        </thead>
+        <tbody id="numeroLista">
+          <!-- Aquí se mostrarán los números -->
+        </tbody>
+      </table>
+      <button class="btn btn-success" onclick="procesarNumeros()">Procesar Números</button>
+      <div class="mt-2">
+        <strong>Mínimo:</strong> <span id="minimo"></span><br>
+        <strong>Máximo:</strong> <span id="maximo"></span><br>
+        <strong>Promedio:</strong> <span id="promedio"></span><br>
+        <strong>Suma:</strong> <span id="suma"></span><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let numeros = [];
+
+  function agregarNumero() {
+    const numeroInput = document.getElementById('numberInput');
+    const numero = parseInt(numeroInput.value);
+    if (!isNaN(numero)) {
+      numeros.push(numero);
+      actualizarLista();
+      numeroInput.value = '';
+    } else {
+      alert('Ingrese un número válido.');
+    }
+  }
+
+  function actualizarLista() {
+    const listaElemento = document.getElementById('numeroLista');
+    listaElemento.innerHTML = '';
+    numeros.forEach((numero, index) => {
+      const fila = `<tr><td>${index}</td><td>${numero}</td></tr>`;
+      listaElemento.innerHTML += fila;
+    });
+  }
+
+  function procesarNumeros() {
+    if (numeros.length === 0) {
+      alert('La lista está vacía. Por favor, agregue números.');
+      return;
+    }
+
+    const minimo = Math.min(...numeros);
+    const maximo = Math.max(...numeros);
+    const promedio = calcularPromedio();
+    const suma = numeros.reduce((total, num) => total + num, 0);
+
+    document.getElementById('minimo').textContent = minimo;
+    document.getElementById('maximo').textContent = maximo;
+    document.getElementById('promedio').textContent = promedio;
+    document.getElementById('suma').textContent = suma;
+  }
+
+  function calcularPromedio() {
+    const total = numeros.reduce((total, num) => total + num, 0);
+    return total / numeros.length;
+  }
+</script>
+
+</body>
+</html>
